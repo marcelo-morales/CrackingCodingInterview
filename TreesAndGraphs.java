@@ -167,6 +167,78 @@ public class TreesAndGraphs {
 
 
       }
+
+      /*
+      Implement a function to check if a binary tree is a binary search tree.
+       */
+
+      //the recursive code is as follows:
+
+      boolean checkBST(TreeNode n) {
+         return checkBST(n, null, null);
+      }
+
+      boolean checkBST(TreeNode n, Integer min, Integer max) {
+         if (n == null) {
+            return true;
+         }
+
+         if ((min != null && n.data <= min) || (max != null && n.data > max)) {
+            return false;
+         }
+
+         if (!checkBST(n.left, min, n.data) || !checkBST(n.right, n.data, max)) {
+            return false;
+         }
+
+         return true;
+
+      }
+
+      //remember that in recursive algorithms, you should always make sure that your base cases, as well
+      //as your null cases, are well handled
+
+
+      /*
+      Write an algorithm to find the "next" node of a fiven node in a binary search tree
+
+      In in-order traverses the left subtree, then the current node, then the right subtrees
+       */
+
+      TreeNode inorderSucc(TreeNode n) {
+         if (n == null) {
+            return null;
+         }
+
+         //if found right children -> return leftmose node of righ subtree
+
+         if (n.right != null) {
+            return leftMostChild(n.right);
+         } else {
+            TreeNode q = n;
+            TreeNode x = q.parent;
+
+            //go up until we're on left insteaf of right
+            while (x != null && x.left != q) {
+               q = x;
+               x = x.parent;
+            }
+            return x;
+         }
+      }
+
+      TreeNode leftMostChild (TreeNode n) {
+         if (n == null) {
+            return null;
+         }
+         while (n.left != null) {
+            n = n.left;
+         }
+         return n;
+      }
+
+
+
    
    
    
