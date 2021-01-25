@@ -135,6 +135,38 @@ public class TreesAndGraphs {
 
          return result;
       }
+
+
+      /*
+      Implement a function to check if a binary tree is balanced. A balanced tree is defined to be a tree
+      such that the heights of the two subtrees of any node never differ by more than one -> for the purpose
+      of this question.
+
+      this algorithm is O(n log n) since each node is touched once per node above it.
+       */
+
+      int getHeight(TreeNode root) {
+         if (root==null) {
+            return -1; //base case
+         }
+         return Math.max(getHeights(root.left), getHeights(root.right)) + 1;
+      }
+
+      boolean isBalanced(TreeNode root) {
+         if (root == null) {
+            return true; //base case
+         }
+
+         int heightDiff = getHeight(root.left) - getHeight(root.right);
+
+         if (Math.abs(heightDiff) > 1) {
+            return false;
+         } else {
+            return isBalanced(root.right) && isBalanced(root.left);
+         }
+
+
+      }
    
    
    
