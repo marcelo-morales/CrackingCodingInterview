@@ -238,11 +238,122 @@ public class TreesAndGraphs {
       }
 
 
+      /*
+      Design an algorithm and write code to find the first common ancestor of two nodes in a binary tree.
+       */
 
-   
-   
-   
-   
+      TreeNode commonAncdstor(TreeNode p, TreeNode q) {
+         int delta = depth(p) - depth(q);  //get differnece in depths
+         TreeNode first = delta > 0 ? q : p; //get shallower node
+         TreeNode second = delta > 0 ? p : q; //get deeper node
+         second = goUpBy(second, Math.abs(delta)); //move deeper node up
+
+         //find where paths intersect
+         while(first != second && first != null && second != null) {
+            first = first.parent;
+            second = second.parent;
+         }
+         return first == null || second == null ? null : first;
+
+      }
+
+   private TreeNode goUpBy(TreeNode node, int delta) {
+      while (delta > 0 && node != null) {
+         node = node.parent;
+         delta--;
+      }
+      return node;
+   }
+
+   private int depth(TreeNode node) {
+      int depth = 0;
+      while (node != null) {
+         ++depth;
+         node = node.parent;
+      }
+      return depth;
+   }
+
+   /*
+   Check subtree - T1 and T2 are two very large binary trees, with T1 much bigger than T2. Create an algorithm to
+   determine if T2 is a subtree of T1.
+    */
+
+   //observe that as long as we represent the NULL nodes, the pre-order traversal of a tree is unique
+
+   //a preorder traversal always starts at the root, and from there, the path we take is entirely defined by the
+   //traversal. Therefore, two trees are identifical if they have the same pre-order traversal.
+
+   boolean containsTree(TreeNode t1, TreeNode t2) {
+      StringBuilder string1 = new StringBuilder();
+      StringBuilder string2 = new StringBuilder();
+
+      getOrderString(t1, string1);
+      getOrderString(t2, string2);
+
+      return string1.indexOf(string2.toString()) != -1;
+
+
+
+   }
+
+   private void getOrderString(TreeNode node, StringBuilder sb) {
+      if (node == null) {
+         sb.append("X"); //adding a null indicator
+         return;
+      }
+
+      sb.append(node.data + " "); //adding root
+      getOrderString(node.left, sb); //add left
+      getOrderString(node.right, sb); //add right
+   }
+
+
+   /*
+   You are given a binary tree in which each node contains an integer value. Design an algorithm to
+   count the number of paths that sum to a given value
+    */
+
+   //brute force solution
+
+   //look at all possivle paths
+   //to do this, we traverse to each node. At each node, we recursively try all paths downwards
+   //tracking the sum as we go, as soon as we hit our target sum, we increment the total
+
+   int countPathsWithSum (TreeNode root, int targetSum) {
+      if (root == null) {
+         return 0;
+      }
+
+      //count paths with sum starting from root
+      int pathsFromRoot = countPathsWithSumFromNode(root, targetSum, 0);
+
+      //try nodes on the left and the right
+      int pathsOnLeft = countPathsWithSumFromNode(root.left, targetSum, 0);
+      int pathsOnRight = countPathsWithSumFromNode(root.right, targetSum, 0);
+
+      return pathsFromRoot + pathsOnLeft + pathsOnRight;
+
+
+   }
+
+   private int countPathsWithSumFromNode(TreeNode node, int targetSum, int currentSum) {
+      if (node == null) {
+         return 0;
+      }
+
+      currentSum += node.data;
+      int totalPaths = 0;
+      if (currentSum == targetSum) {
+         ++totalPaths;
+      }
+
+      totalPaths += countPathsWithSum(node.left, targetSum, currentSum);
+      totalPaths += countPathsWithSum(node.right, targetSum, currentSum);
+      return totalPaths;
+
+
+   }
 
 
 }
