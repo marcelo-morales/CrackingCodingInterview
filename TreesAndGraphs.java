@@ -1,7 +1,11 @@
 import apple.laf.JRSUIUtils;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import org.graalvm.compiler.graph.Graph;
 import org.graalvm.compiler.graph.Node;
 
+import javax.swing.tree.TreeNode;
 import java.util.LinkedList;
 
 public class TreesAndGraphs {
@@ -96,6 +100,45 @@ public class TreesAndGraphs {
       n.right = createMinimalTree(arr, mid + 1, end);
       return n;
    }
+   
+   /*
+   Given a binary tree, design an algorithm that creates a linked list of all the nodes at each depth
+   (e.g., if you have a tree with depth D, you'll have D linked lists)
+   
+   we can also implement a modficiation of breadth-first search, with implementation, we can
+   iterate through the root first, then level 2, then level 3, and so on.
+    */
+   
+      ArrayList<LinkedList<TreeNode>> createLevelLinkedList(Tree root) {
+         ArrayList<LinkedList<TreeNode>> result = new ArrayList<LinkedList<TreeNode>>();
+         
+         //visit the root
+         LinkedList<TreeNode> current = new LinkedList<TreeNode>();
+         if (root != null) {
+            result.add(root);
+         }
+         
+         while (current.size() > 0) {
+            result.add(current); //add previous level
+            LinkedList<TreeNode> parents = current;
+            for (TreeNode parent : parents) {
+               if (parent.left != null) {
+                  current.add(parent.left);
+               }
+
+               if (parent.right != null) {
+                  current.add(parent.right);
+               }
+            }
+
+         }
+
+         return result;
+      }
+   
+   
+   
+   
 
 
 }
