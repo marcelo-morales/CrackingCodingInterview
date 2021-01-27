@@ -12,7 +12,7 @@ public class TreesAndGraphs {
       System.out.println("Hello World");
    }
 
-   public class TreeNode {
+   public static class TreeNode {
       public int data;
       public TreeNode left, right, parent;
       private int size = 0;
@@ -30,7 +30,6 @@ public class TreesAndGraphs {
                left.insertInOrder(d);
             }
 
-
          } else {
             if (right == null) {
                setRightChild(new TreeNode(d));
@@ -47,14 +46,14 @@ public class TreesAndGraphs {
          return size;
       }
 
-      private void setLeftChild(TreeNode treeNode) {
+      private void setLeftChild(TreeNode left) {
          this.left = left;
          if (left != null) {
             left.parent = this;
          }
       }
 
-      private void setRightChild(TreeNode treeNode) {
+      private void setRightChild(TreeNode right) {
          this.right = right;
          if (right != null) {
             right.parent = this;
@@ -134,20 +133,19 @@ public class TreesAndGraphs {
    /*
    TO create a tree of minimal height, we need to match the number of nodes in the left subtree to the
    number of nodes in the right subtree as much as possible -> we want the root to be the middle of the array -> since that would mean that half the elements
-   would be less than the root and hald would be greater than it.
+   would be less than the root and half would be greater than it.
     */
 
    public static TreeNode minimalTree(int [] array) {
       return minimalTree(array, 0, array.length - 1);
-
    }
    /*
-   the method is passed a subsection of the array and tetruns the root of a minal tree of that array
+   the method is passed a subsection of the array and returns the root of a minimal tree of that array
 
    algorithm is as follows:
 
    1. insert into the tree the middle element of the array
-   2. insert (int toe left subtree) the left subarray elements.
+   2. insert (int the left subtree) the left subarray elements.
    3. Insert (into the right subtree) the right subarray elements.
    4, Recurse
     */
@@ -158,9 +156,9 @@ public class TreesAndGraphs {
       }
 
       int mid = (start + end) / 2;
-      TreeNode n = new TreeNode(arr[mid]);
-      n.left = createMinimalTree(arr, start, mid-1);
-      n.right = createMinimalTree(arr, mid + 1, end);
+      TreeNode n = new TreeNode(array[mid]);
+      n.left = minimalTree(array, start, mid-1);
+      n.right = minimalTree(array, mid + 1, end);
       return n;
    }
    
@@ -168,7 +166,7 @@ public class TreesAndGraphs {
    Given a binary tree, design an algorithm that creates a linked list of all the nodes at each depth
    (e.g., if you have a tree with depth D, you'll have D linked lists)
    
-   we can also implement a modficiation of breadth-first search, with implementation, we can
+   we can also implement a modification of breadth-first search, with implementation, we can
    iterate through the root first, then level 2, then level 3, and so on.
     */
    
@@ -212,7 +210,7 @@ public class TreesAndGraphs {
          if (root==null) {
             return -1; //base case
          }
-         return Math.max(getHeights(root.left), getHeights(root.right)) + 1;
+         return Math.max(getHeight(root.left), getHeight(root.right)) + 1;
       }
 
       boolean isBalanced(TreeNode root) {
@@ -263,7 +261,7 @@ public class TreesAndGraphs {
 
 
       /*
-      Write an algorithm to find the "next" node of a fiven node in a binary search tree
+      Write an algorithm to find the "next" node of a given node in a binary search tree
 
       In in-order traverses the left subtree, then the current node, then the right subtrees
        */
@@ -305,8 +303,8 @@ public class TreesAndGraphs {
       Design an algorithm and write code to find the first common ancestor of two nodes in a binary tree.
        */
 
-      TreeNode commonAncdstor(TreeNode p, TreeNode q) {
-         int delta = depth(p) - depth(q);  //get differnece in depths
+      TreeNode commonAncestor(TreeNode p, TreeNode q) {
+         int delta = depth(p) - depth(q);  //get difference in depths
          TreeNode first = delta > 0 ? q : p; //get shallower node
          TreeNode second = delta > 0 ? p : q; //get deeper node
          second = goUpBy(second, Math.abs(delta)); //move deeper node up
@@ -345,7 +343,7 @@ public class TreesAndGraphs {
    //observe that as long as we represent the NULL nodes, the pre-order traversal of a tree is unique
 
    //a preorder traversal always starts at the root, and from there, the path we take is entirely defined by the
-   //traversal. Therefore, two trees are identifical if they have the same pre-order traversal.
+   //traversal. Therefore, two trees are identical if they have the same pre-order traversal.
 
    boolean containsTree(TreeNode t1, TreeNode t2) {
       StringBuilder string1 = new StringBuilder();
@@ -355,9 +353,6 @@ public class TreesAndGraphs {
       getOrderString(t2, string2);
 
       return string1.indexOf(string2.toString()) != -1;
-
-
-
    }
 
    private void getOrderString(TreeNode node, StringBuilder sb) {
@@ -379,7 +374,7 @@ public class TreesAndGraphs {
 
    //brute force solution
 
-   //look at all possivle paths
+   //look at all possible paths
    //to do this, we traverse to each node. At each node, we recursively try all paths downwards
    //tracking the sum as we go, as soon as we hit our target sum, we increment the total
 
