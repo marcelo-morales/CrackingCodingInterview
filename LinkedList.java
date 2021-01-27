@@ -72,7 +72,7 @@ public class LinkedList {
     //current which iterates through the linked list
     //and runner which checks all subsequent nodes for duplicates
 
-    void delteSups(LinkedListNode head) {
+    void deletDuplicates(LinkedListNode head) {
         LinkedListNode current = head;
         while (current != null) {
             //remove all future nodes that have the same value
